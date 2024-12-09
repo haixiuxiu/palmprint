@@ -1,0 +1,17 @@
+<view class="container">
+  <view class="palm-scan-area">
+    <camera device-position="back" flash="off" binderror="error" class="camera"></camera>
+    <cover-view class="scan-box">
+      <cover-image src="/assets/palm-outline.png" class="palm-outline"></cover-image>
+    </cover-view>
+  </view>
+  
+  <view class="button-group">
+    <button bindtap="startScan" class="scan-btn">开始扫描</button>
+    <button bindtap="matchPalm" class="match-btn" disabled="{{!hasScannedImage}}">开始匹配</button>
+  </view>
+  
+  <view class="result-area" wx:if="{{matchResult}}">
+    <text class="result-text">{{matchResult}}</text>
+  </view>
+</view>
