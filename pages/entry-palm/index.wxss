@@ -5,6 +5,23 @@
     padding: 20px;
   }
   
+  /* 提示区域样式 */
+.tip-area {
+  width: 100%;
+  padding: 20rpx;
+  background-color: #EAF3FF;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+}
+
+.tip-text {
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #576B95;
+}
+
   .header {
     text-align: center;
     margin-bottom: 20px;
@@ -85,3 +102,21 @@
     border-radius: 5px;
   }
   
+  .content {
+    padding-bottom: 100px;
+  }
+
+/* tabbar-item-container 用于垂直排列图标和文字 */
+.tabbar-item-container {
+  display: flex;
+  flex-direction: column;  /* 设置垂直排列 */
+  align-items: center;     /* 水平居中对齐 */
+}
+
+/* 设置图标的大小 */
+.tabbar-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px;  /* 图标和文字之间的间距 */
+}
+
