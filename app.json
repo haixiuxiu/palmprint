@@ -1,18 +1,20 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/palm-scan/index",
     "pages/logs/logs",
-    "pages/palm-scan/index"
-  ],
-  "requiredPrivateInfos": [
-    "getLocation",
-    "chooseLocation"
+    "pages/entry-palm/index",
+    "pages/palm-record/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "WeChat",
     "navigationBarTextStyle": "black"
+  },
+  "networkTimeout": {
+    "request": 10000,
+    "downloadFile": 10000
   },
   "style": "v2",
   "componentFramework": "glass-easel",

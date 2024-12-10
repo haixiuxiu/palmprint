@@ -1,64 +1,215 @@
 .container {
-  padding: 20px;
+  padding: 20rpx;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* 提示区域样式 */
+.tip-area {
+  width: 100%;
+  padding: 20rpx;
+  background-color: #EAF3FF;
+  border-radius: 12rpx;
+  margin-bottom: 30rpx;
+  display: flex;
+  align-items: center;
+}
+
+.tip-text {
+  margin-left: 10rpx;
+  font-size: 28rpx;
+  color: #576B95;
+}
+
+/* 扫描区域样式 */
 .palm-scan-area {
   position: relative;
   width: 600rpx;
   height: 600rpx;
   margin: 0 auto;
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
 }
 
-.palm-scan-area .camera {
+.camera {
   width: 100%;
   height: 100%;
 }
 
-.palm-scan-area .scan-box {
+.scan-box {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.palm-scan-area .scan-box .palm-outline {
+.palm-outline {
+  width: 80%;
+  height: 80%;
+  opacity: 0.6;
+}
+
+/* 扫描动画 */
+.scan-line {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100%;
-  opacity: 0.5;
+  height: 4rpx;
+  background: linear-gradient(to right, transparent, #07c160, transparent);
+  animation: scan 2s linear infinite;
 }
 
+@keyframes scan {
+  0% { top: 0; }
+  100% { top: 100%; }
+}
+
+/* 相机控制按钮 */
+.camera-controls {
+  margin-top: 30rpx;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 40rpx;
+}
+
+.control-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  width: 180rpx;
+}
+
+.control-icon {
+  width: 48rpx;
+  height: 48rpx;
+  margin-bottom: 10rpx;
+}
+
+.control-text {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 按钮组样式 */
 .button-group {
-  margin-top: 40rpx;
+  margin-top: 30rpx;
+  width: 100%;
   display: flex;
   justify-content: space-around;
+  padding: 0 30rpx;
 }
 
-.button-group button {
-  width: 280rpx;
-  margin: 0;
+.scan-btn, .match-btn {
+  flex: 1;
+  margin: 0 20rpx;
+  height: 88rpx;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  font-weight: 500;
+  transition: all 0.3s;
 }
 
-.button-group .scan-btn {
-  background-color: #1AAD19;
+.scan-btn {
+  background-color: #07c160;
   color: white;
 }
 
-.button-group .match-btn {
+.scan-btn.scanning {
+  background-color: #ff4d4f;
+}
+
+.match-btn {
   background-color: #576B95;
   color: white;
 }
 
-.button-group .match-btn[disabled] {
-  background-color: #ccc;
+.match-btn[disabled] {
+  background-color: #cccccc;
+  opacity: 0.6;
 }
 
+.button-hover {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* 结果区域样式 */
 .result-area {
   margin-top: 40rpx;
+  width: 100%;
+  padding: 0 30rpx;
+}
+
+.result-card {
+  background-color: white;
+  border-radius: 16rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.result-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.result-title {
+  margin-left: 10rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.result-content {
+  padding: 20rpx 0;
+}
+
+.result-text {
+  font-size: 28rpx;
+  color: #333;
+  line-height: 1.6;
+}
+
+.similarity-bar {
+  margin-top: 20rpx;
+}
+
+.similarity-text {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+/* 底部提示样式 */
+.footer-tips {
+  margin-top: 40rpx;
+  padding: 20rpx;
   text-align: center;
 }
 
-.result-area .result-text {
-  font-size: 32rpx;
-  color: #333;
+.footer-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 可以添加点击效果 */
+.control-btn:active {
+  background: #e8e8e8;
+  transform: scale(0.98);
 }

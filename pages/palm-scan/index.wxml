@@ -1,17 +1,65 @@
 <view class="container">
-  <view class="palm-scan-area">
-    <camera device-position="back" flash="off" binderror="error" class="camera"></camera>
+  <!-- 顶部提示区域 -->
+  <view class="tip-area">
+    <icon type="info" size="16" color="#576B95"/>
+    <text class="tip-text">{{tipText}}</text>
+  </view>
+
+  <!-- 扫描区域 -->
+  <view class="palm-scan-area {{isScanning ? 'scanning' : ''}}">
+    <camera 
+      device-position="{{devicePosition}}"
+      flash="{{flashMode}}" 
+      binderror="error" 
+      class="camera">
+    </camera>
     <cover-view class="scan-box">
+      <cover-view class="scan-line" wx:if="{{isScanning}}"></cover-view>
       <cover-image src="/assets/palm-outline.png" class="palm-outline"></cover-image>
     </cover-view>
   </view>
-  
-  <view class="button-group">
-    <button bindtap="startScan" class="scan-btn">开始扫描</button>
-    <button bindtap="matchPalm" class="match-btn" disabled="{{!hasScannedImage}}">开始匹配</button>
+
+  <!-- 相机控制按钮 - 移到扫描框下方 -->
+  <view class="camera-controls">
+    <view class="control-btn" bindtap="toggleFlash">
+      <image src="/assets/{{flashMode === 'on' ? 'flash-on.png' : 'flash-off.png'}}" class="control-icon"></image>
+      <text class="control-text">{{flashMode === 'on' ? '关闭闪光灯' : '开启闪光灯'}}</text>
+    </view>
+    <view class="control-btn" bindtap="switchCamera">
+      <image src="/assets/switch-camera.png" class="control-icon"></image>
+      <text class="control-text">切换摄像头</text>
+    </view>
   </view>
-  
+
+  <!-- 操作按钮区域 -->
+  <view class="button-group">
+    <button bindtap="startScan" class="scan-btn {{isScanning ? 'scanning' : ''}}" hover-class="button-hover">
+      <text class="btn-text">{{isScanning ? '停止扫描' : '开始扫描'}}</text>
+    </button>
+    <button bindtap="matchPalm" class="match-btn" disabled="{{!hasScannedImage}}" hover-class="button-hover">
+      <text class="btn-text">开始匹配</text>
+    </button>
+  </view>
+
+  <!-- 结果展示区域 -->
   <view class="result-area" wx:if="{{matchResult}}">
-    <text class="result-text">{{matchResult}}</text>
+    <view class="result-card">
+      <view class="result-header">
+        <icon type="{{matchSuccess ? 'success' : 'warn'}}" size="24" color="{{matchSuccess ? '#07c160' : '#ff4d4f'}}"/>
+        <text class="result-title">匹配结果</text>
+      </view>
+      <view class="result-content">
+        <text class="result-text">{{matchResult}}</text>
+        <view class="similarity-bar" wx:if="{{similarity}}">
+          <text class="similarity-text">相似度：{{similarity}}%</text>
+          <progress percent="{{similarity}}" stroke-width="3" color="{{similarity > 80 ? '#07c160' : '#ff4d4f'}}"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部提示区域 -->
+  <view class="footer-tips">
+    <text class="footer-text">请将手掌放在取景框内，保持手掌完整显示</text>
   </view>
 </view>

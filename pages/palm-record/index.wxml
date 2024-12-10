@@ -1,0 +1,35 @@
+<view class="container">
+    <!-- 显示信息 -->
+    <view class="content">
+        <text>姓名: {{name}}</text>
+        <text>录入手掌: {{hand === 'left' ? '左手' : '右手'}}</text>
+    </view>
+
+    <!-- 扫描区域 -->
+    <view class="palm-scan-area">
+        <!-- 嵌入摄像头 -->
+        <camera device-position="back" flash="auto" binderror="onCameraError" class="camera">
+        </camera>
+
+        <!-- 自定义取景框 -->
+        <cover-view class="scan-box">
+            <cover-image src="{{hand === 'left' ? '/assets/icons/left_scan.png' : '/assets/icons/right_scan.png'}}"
+                class="palm-outline">
+            </cover-image>
+        </cover-view>
+
+        <!-- 扫描线动画 -->
+        <cover-view class="scan-line" wx:if="{{isScanning}}"></cover-view>
+    </view>
+    <!-- 进度条 -->
+    <view class="progress-container">
+        <van-circle value="{{currentStep / totalSteps * 100}}" color="{{gradientColor}}" text="录入第{{currentStep}}张" />
+    </view>
+
+
+    <!-- 操作按钮 -->
+    <view class="actions">
+        <button bindtap="takePhoto" wx:if="{{currentStep < totalSteps}}">拍照</button>
+        <button wx:if="progress === 100" bindtap="complete">完成</button>
+    </view>
+</view>

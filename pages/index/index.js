@@ -58,5 +58,18 @@ Page({
         console.log('跳转失败', error)
       }
     })
+  },
+  // 添加跳转方法
+  goPalmEntry() {
+    console.log('点击掌纹录入按钮') // 添加日志便于调试
+    wx.navigateTo({
+      url: '/pages/entry-palm/index',
+      success: function() {
+        console.log('跳转成功')
+      },
+      fail: function(error) {
+        console.log('跳转失败', error)
+      }
+    })
   }
 })
