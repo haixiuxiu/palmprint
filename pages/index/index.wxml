@@ -13,6 +13,7 @@
       <image src="/assets/dynamic/clockin.gif" class="gif-animation"></image>
       <text class="button-text">签到</text>
     </view>
+
   </view>
 
 </scroll-view>

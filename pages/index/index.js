@@ -71,5 +71,17 @@ Page({
         console.log('跳转失败', error)
       }
     })
+  },
+  goPunchCard() {
+    console.log('点击掌纹打卡按钮')
+    wx.navigateTo({
+      url: '/pages/punch-card/index',
+      success: function() {
+        console.log('跳转成功')
+      },
+      fail: function(error) {
+        console.log('跳转失败', error)
+      }
+    })
   }
 })
