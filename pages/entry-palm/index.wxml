@@ -1,59 +1,60 @@
 <view class="container">
-    <view class="header">
-      <text class="nickname">请填写姓名，并选择录入左手或右手</text>
+  <view class="tip-area">
+    <icon type="info" size="16" color="#576B95" />
+    <text class="tip-text">{{tipText}}</text>
+  </view>
+
+  <view class="form">
+    <!-- 输入姓名 -->
+    <view class="form-item">
+      <text class="label">录入姓名</text>
+      <input type="text" placeholder="请输入姓名" value="{{userInfo.nickName}}" bindinput="onInputChange" />
     </view>
-  
-    <view class="form">
-      <!-- 输入姓名 -->
-      <view class="form-item">
-        <text class="label">姓名</text>
-        <input 
-          type="text" 
-          placeholder="请输入姓名" 
-          value="{{userInfo.nickName}}" 
-          bindinput="onInputChange" 
-        />
-      </view>
-  
-      <!-- 选择左右手 -->
-      <view class="form-item">
-        <text class="label">选择手掌</text>
-        <view class="hand-selection">
-          <view 
-            class="hand-item {{selectedHand === 'left' ? 'selected' : ''}}" 
-            data-hand="left" 
-            bindtap="onHandSelect"
-          >
-            <text>左手</text>
-            <image class="hand-icon" src="/assets/icons/left.png"></image>
-          </view>
-          <view 
-            class="hand-item {{selectedHand === 'right' ? 'selected' : ''}}" 
-            data-hand="right" 
-            bindtap="onHandSelect"
-          >
-            <image class="hand-icon" src="/assets/icons/right.png"></image>
-            <text>右手</text>
-          </view>
+
+    <!-- 选择左右手 -->
+    <view class="form-item">
+      <text class="label">选择手掌</text>
+      <view class="hand-selection">
+        <view class="hand-item {{selectedHand === 'left' ? 'selected' : ''}}" data-hand="left" bindtap="onHandSelect">
+          <text>左手</text>
+          <image class="hand-icon" src="/assets/icons/left.png"></image>
+        </view>
+        <view class="hand-item {{selectedHand === 'right' ? 'selected' : ''}}" data-hand="right" bindtap="onHandSelect">
+          <image class="hand-icon" src="/assets/icons/right.png"></image>
+          <text>右手</text>
         </view>
       </view>
-  
-      <!-- 状态显示 -->
-      <view class="status">
-        <text>
-          {{userInfo.nickName ? userInfo.nickName : '未填写姓名'}}:{{selectedHand ? ((selectedHand === 'left' ? '左手' : '右手')) : '未选择手掌'}}
-        </text>
-      </view>
-  
-      <!-- 开始录入按钮 -->
-      <view class="form-item">
-        <button 
-          class="start-btn" 
-          bindtap="startRecording" 
-          disabled="{{!userInfo.nickName || !selectedHand}}"
-        >开始录入
-        </button>
-      </view>
+    </view>
+
+    <!-- 状态显示 -->
+    <view class="status">
+      <text>
+        {{userInfo.nickName ? userInfo.nickName : '未填写姓名'}}:{{selectedHand ? ((selectedHand === 'left' ? '左手' : '右手')) :
+        '未选择手掌'}}
+      </text>
+    </view>
+
+    <!-- 开始录入按钮 -->
+    <view class="form-item">
+      <button class="start-btn" bindtap="startRecording" disabled="{{!userInfo.nickName || !selectedHand}}">开始录入
+      </button>
     </view>
   </view>
-  
+  <!-- 导航栏 -->
+  <van-tabbar active="{{ active }}" bind:change="onChange" active-color="#07c160">
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 0 ? '/assets/icons/input_pick.png' : '/assets/icons/input.png'}}" />
+        <text class="{{active === 0 ? 'active-text' : 'inactive-text'}}">录入</text>
+      </view>
+    </van-tabbar-item>
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 1 ? '/assets/icons/clockin_pick.png' : '/assets/icons/clockin.png'}}" />
+        <text class="{{active === 1 ? 'active-text' : 'inactive-text'}}">签到</text>
+      </view>
+    </van-tabbar-item>
+  </van-tabbar>
+</view>

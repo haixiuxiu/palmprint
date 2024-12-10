@@ -1,10 +1,19 @@
 <!--index.wxml-->
 <scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <!-- ... 现有代码 ... -->
-    <button bindtap="goPalmScan">掌纹扫描</button>  
-    <button bindtap="goPalmEntry">掌纹录入</button>
-    <button bindtap="goPunchCard">掌纹打卡</button>  <!-- 新增 -->  
+  <view class="button-container">
+    <view bindtap="goPalmScan" class="gif-button-container">
+      <image src="/assets/dynamic/recognize.gif" class="gif-animation"></image>
+      <text class="button-text">掌纹识别</text>
+    </view>
+    <view bindtap="goPalmEntry" class="gif-button-container">
+      <image src="/assets/dynamic/scan.gif" class="gif-animation"></image>
+      <text class="button-text">掌纹录入</text>
+    </view>
+    <view bindtap="goPalmEntry" class="gif-button-container">
+      <image src="/assets/dynamic/clockin.gif" class="gif-animation"></image>
+      <text class="button-text">签到</text>
+    </view>
+
   </view>
 
 </scroll-view>
