@@ -4,7 +4,8 @@
     "pages/palm-scan/index",
     "pages/logs/logs",
     "pages/entry-palm/index",
-    "pages/palm-record/index"
+    "pages/palm-record/index",
+    "pages/punch-card/index"
   ],
   "window": {
     "backgroundTextStyle": "light",

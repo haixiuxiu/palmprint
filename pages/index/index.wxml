@@ -3,7 +3,8 @@
   <view class="container">
     <!-- ... 现有代码 ... -->
     <button bindtap="goPalmScan">掌纹扫描</button>  
-    <button bindtap="goPalmEntry">掌纹录入</button>  
+    <button bindtap="goPalmEntry">掌纹录入</button>
+    <button bindtap="goPunchCard">掌纹打卡</button>  <!-- 新增 -->  
   </view>
 
 </scroll-view>

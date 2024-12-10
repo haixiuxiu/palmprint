@@ -1,0 +1,194 @@
+.container {
+  min-height: 100vh;
+  background-color: #f6f7fb;
+  padding: 20rpx 30rpx 30rpx;
+}
+
+/* 时钟样式 */
+.clock-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.clock-time {
+  font-size: 80rpx;
+  font-weight: 600;
+  color: #333;
+  font-family: 'DIN Condensed', sans-serif;
+  letter-spacing: 2rpx;
+}
+
+.clock-date {
+  margin-top: 10rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+/* 按钮样式 */
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20rpx;
+  margin-bottom: 20rpx;
+}
+
+.punch-btn {
+  width: 85%;
+  height: 120rpx;
+  border-radius: 20rpx;
+  border: none;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.btn-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon {
+  width: 64rpx;
+  height: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.check-in {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.check-out {
+  background: linear-gradient(135deg, #FF9800, #F57C00);
+}
+
+.punch-btn text {
+  color: white;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+/* 记录卡片样式 */
+.records-card {
+  background: white;
+  border-radius: 24rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  margin-top: 10rpx;
+  position: relative;
+}
+
+.card-header {
+  margin-bottom: 20rpx;
+  padding: 0 10rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+/* 表格样式 */
+.table {
+  border-radius: 16rpx;
+  overflow: hidden;
+  background: #fff;
+}
+
+.table-header {
+  display: flex;
+  background: #f8f9fa;
+  padding: 20rpx 0;
+  border-bottom: 2rpx solid #eee;
+}
+
+.header-cell {
+  flex: 3;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.header-cell.name {
+  flex: 2;
+}
+
+.table-body {
+  max-height: 800rpx;
+}
+
+.table-row {
+  display: flex;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.cell {
+  flex: 3;
+  text-align: center;
+  font-size: 28rpx;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell.name {
+  flex: 2;
+  font-weight: 500;
+  color: #333;
+}
+
+.checked {
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+/* 动画效果 */
+.table-row {
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 空状态样式 */
+.table-body:empty::after {
+  content: '暂无打卡记录';
+  display: block;
+  text-align: center;
+  padding: 40rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+/* 按钮点击效果 */
+.punch-btn:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}

@@ -6,17 +6,23 @@
   </view>
 
   <!-- 扫描区域 -->
-  <view class="palm-scan-area {{isScanning ? 'scanning' : ''}}">
-    <camera 
-      device-position="{{devicePosition}}"
-      flash="{{flashMode}}" 
-      binderror="error" 
-      class="camera">
-    </camera>
-    <cover-view class="scan-box">
-      <cover-view class="scan-line" wx:if="{{isScanning}}"></cover-view>
-      <cover-image src="/assets/palm-outline.png" class="palm-outline"></cover-image>
-    </cover-view>
+  <view class="palm-scan-area">
+    <!-- 当有拍摄图片时显示图片，否则显示相机 -->
+    <block wx:if="{{capturedImage}}">
+      <image class="captured-image" src="{{capturedImage}}" mode="aspectFit"></image>
+    </block>
+    <block wx:else>
+      <camera 
+        device-position="{{devicePosition}}"
+        flash="{{flashMode}}" 
+        binderror="error" 
+        class="camera">
+      </camera>
+      <cover-view class="scan-box">
+        <cover-view class="scan-line" wx:if="{{isScanning}}"></cover-view>
+        <cover-image src="/assets/palm-outline.png" class="palm-outline"></cover-image>
+      </cover-view>
+    </block>
   </view>
 
   <!-- 相机控制按钮 - 移到扫描框下方 -->
@@ -33,11 +39,16 @@
 
   <!-- 操作按钮区域 -->
   <view class="button-group">
-    <button bindtap="startScan" class="scan-btn {{isScanning ? 'scanning' : ''}}" hover-class="button-hover">
-      <text class="btn-text">{{isScanning ? '停止扫描' : '开始扫描'}}</text>
+    <button 
+      class="scan-btn {{isScanning ? 'scanning' : ''}}" 
+      bindtap="handleScanButton">
+      {{capturedImage ? '重新扫描' : (isScanning ? '停止扫描' : '开始扫描')}}
     </button>
-    <button bindtap="matchPalm" class="match-btn" disabled="{{!hasScannedImage}}" hover-class="button-hover">
-      <text class="btn-text">开始匹配</text>
+    <button 
+      class="match-btn" 
+      bindtap="matchPalm" 
+      disabled="{{!capturedImage}}">
+      开始匹配
     </button>
   </view>
 

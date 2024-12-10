@@ -1,0 +1,58 @@
+<view class="container">
+  <!-- 时间显示区域 -->
+  <view class="clock-container">
+    <text class="clock-time">{{currentTime}}</text>
+    <text class="clock-date">{{currentDate}}</text>
+  </view>
+
+  <!-- 打卡按钮区域 -->
+  <view class="button-container">
+    <button class="punch-btn check-in" bindtap="goToPalmMatch" data-type="in">
+      <view class="btn-content">
+        <image class="btn-icon" src="/assets/icons/check-in.png" />
+        <text>签到打卡</text>
+      </view>
+    </button>
+    <button class="punch-btn check-out" bindtap="goToPalmMatch" data-type="out">
+      <view class="btn-content">
+        <image class="btn-icon" src="/assets/icons/check-out.png" />
+        <text>签退打卡</text>
+      </view>
+    </button>
+  </view>
+
+  <!-- 打卡记录区域 -->
+  <view class="records-card">
+    <view class="card-header">
+      <text class="card-title">打卡记录</text>
+    </view>
+    
+    <view class="table">
+      <view class="table-header">
+        <view class="header-cell name">姓名</view>
+        <view class="header-cell">签到时间</view>
+        <view class="header-cell">签退时间</view>
+      </view>
+      
+      <scroll-view 
+        scroll-y 
+        class="table-body"
+        enhanced="true"
+        show-scrollbar="false">
+        <block wx:for="{{punchRecords}}" wx:key="id">
+          <view class="table-row">
+            <view class="cell name">{{item.name}}</view>
+            <view class="cell {{item.checkInTime !== '-' ? 'checked' : ''}}">
+              <text wx:if="{{item.checkInTime !== '-'}}">✓ </text>
+              {{item.checkInTime}}
+            </view>
+            <view class="cell {{item.checkOutTime !== '-' ? 'checked' : ''}}">
+              <text wx:if="{{item.checkOutTime !== '-'}}">✓ </text>
+              {{item.checkOutTime}}
+            </view>
+          </view>
+        </block>
+      </scroll-view>
+    </view>
+  </view>
+</view>

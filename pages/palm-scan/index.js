@@ -9,13 +9,23 @@ Page({
     tipText: '请将手掌放入框内进行扫描',
     matchSuccess: false,
     similarity: 0,
-    cameraContext: null
+    cameraContext: null,
+    mode: '',
+    punchType: '',
+    capturedImage: ''
   },
 
-  onLoad() {
+  onLoad(options) {
     this.setData({
       cameraContext: wx.createCameraContext()
     })
+
+    if (options.mode === 'punch') {
+      this.setData({
+        mode: options.mode,
+        punchType: options.type
+      })
+    }
   },
 
   // 切换闪光灯
@@ -44,149 +54,98 @@ Page({
     })
   },
 
-  async startScan() {
-    if (this.data.isScanning) {
-      this.setData({ isScanning: false })
-      return
+  // 处理扫描按钮点击
+  handleScanButton() {
+    if (this.data.capturedImage) {
+      // 如果有拍摄的图片，则重新扫描
+      this.setData({
+        capturedImage: '',
+        isScanning: false
+      });
+      return;
     }
 
-    this.setData({ 
-      isScanning: true,
-      tipText: '正在扫描中，请保持手掌稳定...'
-    })
+    if (this.data.isScanning) {
+      this.setData({ isScanning: false });
+      return;
+    }
+
+    this.startScan();
+  },
+
+  // 开始扫描
+  async startScan() {
+    this.setData({ isScanning: true });
 
     try {
+      const cameraContext = wx.createCameraContext();
       const res = await new Promise((resolve, reject) => {
-        this.data.cameraContext.takePhoto({
+        cameraContext.takePhoto({
           quality: 'high',
           success: resolve,
           fail: reject
         });
       });
-      
-      console.log('拍照结果:', res);
-      console.log('图片路径:', res.tempImagePath);
-      
-      const imageInfo = await new Promise((resolve, reject) => {
-        wx.getImageInfo({
-          src: res.tempImagePath,
-          success: resolve,
-          fail: reject
-        });
-      });
-      
-      console.log('图片信息:', imageInfo);
-      
+
+      // 保存拍摄的图片
       this.setData({
-        palmImage: res.tempImagePath,
-        hasScannedImage: true,
-        tipText: '掌纹采集成功，请点击匹配按钮进行识别',
+        capturedImage: res.tempImagePath,
         isScanning: false
       });
 
-      wx.showToast({
-        title: '扫描成功',
-        icon: 'success'
-      });
     } catch (error) {
-      console.error('扫描错误:', error);
+      console.error('扫描失败:', error);
       wx.showToast({
-        title: '扫描失败，请重试',
-        icon: 'error'
+        title: '扫描失败',
+        icon: 'none'
       });
-      this.setData({
-        isScanning: false,
-        tipText: '扫描失败，请重新尝试'
-      });
+      this.setData({ isScanning: false });
     }
   },
 
+  // 开始匹配
   async matchPalm() {
-    if (!this.data.palmImage) {
-      wx.showToast({
-        title: '请先扫描掌纹',
-        icon: 'none'
-      });
+    if (!this.data.capturedImage) {
       return;
     }
-    
-    wx.showLoading({
-      title: '正在匹配中...',
-      mask: true
-    });
+
+    wx.showLoading({ title: '匹配中...' });
 
     try {
-      // 1. 检查图片文件是否存在
+      // 转换图片为 base64
       const fs = wx.getFileSystemManager();
+      const base64 = fs.readFileSync(this.data.capturedImage, 'base64');
       
-      // 2. 添加错误处理的 base64 转换函数
-      const getBase64 = (filePath) => {
-        try {
-          const base64 = fs.readFileSync(filePath, 'base64');
-          // 检查 base64 字符串是否有效
-          if (!base64 || base64.length === 0) {
-            throw new Error('Base64 转换结果为空');
-          }
-          console.log('Base64 长度:', base64.length); // 添加日志
-          console.log('Base64 前20个字符:', base64.substring(0, 20)); // 查看开头部分
-          return base64;
-        } catch (error) {
-          console.error('Base64 转换错误:', error);
-          throw error;
-        }
-      };
-
-      const fileContent = getBase64(this.data.palmImage);
-      
-      // 3. 调用后端 API
-      console.log('开始调用API, 图片大小:', fileContent.length);
-      
-      const res = await wx.request({
+      // 调用后端验证接口
+      const validateRes = await wx.request({
         url: 'http://47.100.103.52:5000/api/validatePalm',
         method: 'POST',
         data: {
-          image: fileContent,
+          image: base64,
           method: 1
-        },
-        header: {
-          'content-type': 'application/json'
         }
       });
 
-      console.log('API响应:', res.data);
-
-      if (res.data && res.data.code === 200) {
-        this.setData({
-          matchSuccess: true,
-          matchResult: res.data.data.matchResult
-        });
-        wx.showToast({
-          title: '匹配成功',
-          icon: 'success'
-        });
+      if (validateRes.data.code === 200) {
+        // 如果是打卡模式，调用打卡接口
+        if (this.data.mode === 'punch') {
+          await this.handleMatchSuccess(validateRes.data.data);
+        } else {
+          // 普通匹配模式的处理
+          wx.showToast({
+            title: '匹配成功',
+            icon: 'success'
+          });
+        }
       } else {
-        throw new Error(res.data?.message || '未知错误');
+        throw new Error(validateRes.data?.message || '匹配失败');
       }
+
     } catch (error) {
-      console.error('完整错误信息:', error);
-      
-      // 显示更友好的错误信息
-      let errorMsg = '匹配失败';
-      if (error.message.includes('未检测到关键点')) {
-        errorMsg = '未能正确识别掌纹，请调整手掌位置重新拍摄';
-      } else if (error.message.includes('Base64')) {
-        errorMsg = '图片处理失败，请重新拍摄';
-      }
-      
-      this.setData({
-        matchSuccess: false,
-        matchResult: errorMsg
-      });
-      
+      console.error('匹配失败:', error);
       wx.showToast({
-        title: errorMsg,
-        icon: 'none',
-        duration: 2000
+        title: error.message || '匹配失败',
+        icon: 'none'
       });
     } finally {
       wx.hideLoading();
@@ -206,6 +165,43 @@ Page({
       wx.removeSavedFile({
         filePath: this.data.palmImage
       })
+    }
+  },
+
+  async handleMatchSuccess(result) {
+    if (this.data.mode === 'punch') {
+      try {
+        const res = await wx.request({
+          url: 'http://47.100.103.52:5000/api/doPunchCard',
+          method: 'POST',
+          data: {
+            userId: result.userId,
+            type: this.data.punchType,
+            time: new Date().toISOString()
+          }
+        })
+
+        if (res.data.code === 200) {
+          wx.showToast({
+            title: this.data.punchType === 'in' ? '签到成功' : '签退成功',
+            icon: 'success'
+          })
+          
+          // 返回打卡页面
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 1500)
+        }
+      } catch (error) {
+        console.error('打卡失败:', error)
+        wx.showToast({
+          title: '打卡失败',
+          icon: 'error'
+        })
+      }
+    } else {
+      // 原有的匹���成功逻辑
+      // ...
     }
   }
 })

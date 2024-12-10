@@ -105,24 +105,21 @@
 
 /* 按钮组样式 */
 .button-group {
-  margin-top: 30rpx;
-  width: 100%;
   display: flex;
-  justify-content: space-around;
-  padding: 0 30rpx;
+  flex-direction: column;
+  gap: 20rpx;
+  padding: 30rpx;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .scan-btn, .match-btn {
-  flex: 1;
-  margin: 0 20rpx;
+  width: 100%;
   height: 88rpx;
   border-radius: 44rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 32rpx;
   font-weight: 500;
-  transition: all 0.3s;
+  border: none;
 }
 
 .scan-btn {
@@ -130,23 +127,15 @@
   color: white;
 }
 
-.scan-btn.scanning {
-  background-color: #ff4d4f;
-}
-
 .match-btn {
-  background-color: #576B95;
+  background-color: #1989fa;
   color: white;
 }
 
 .match-btn[disabled] {
-  background-color: #cccccc;
+  background-color: #ccc;
+  color: #fff;
   opacity: 0.6;
-}
-
-.button-hover {
-  transform: scale(0.98);
-  opacity: 0.9;
 }
 
 /* 结果区域样式 */
@@ -212,4 +201,11 @@
 .control-btn:active {
   background: #e8e8e8;
   transform: scale(0.98);
+}
+
+/* 添加拍摄图片的样式 */
+.captured-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 20rpx;
 }
