@@ -40,16 +40,6 @@ Page({
           success: (fileRes) => {
             console.log('图片 Base64 编码成功');
             const base64Image = fileRes.data;
-                  // 更新进度
-                  if (currentStep < totalSteps) {
-                    this.setData({
-                      currentStep: currentStep + 1,
-                    });
-                    console.log(currentStep);
-                    if(currentStep+1==totalSteps){
-                      this.complete();
-                    }
-                  }
             // 调用后端接口发送数据
             wx.request({
               url: 'https://palmvault.asia/api/inputPalm',

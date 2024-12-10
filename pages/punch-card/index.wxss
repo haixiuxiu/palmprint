@@ -114,6 +114,7 @@
   border-radius: 16rpx;
   overflow: hidden;
   background: #fff;
+  max-height: 22vh;
 }
 
 .table-header {
@@ -136,7 +137,9 @@
 }
 
 .table-body {
-  max-height: 800rpx;
+  max-height: 400rpx; /* 设置最大高度 */
+  overflow-y: auto; /* 开启垂直滚动条 */
+  scrollbar-width: thin; /* 设置滚动条宽度（现代浏览器） */
 }
 
 .table-row {

@@ -2,16 +2,15 @@ Page({
   data: {
     currentTime: '',
     currentDate: '',
-    punchRecords: [{ id: 1, name: '张三', checkInTime: '2024-12-01 08:30', checkOutTime: '2024-12-01 17:30' },
-      { id: 2, name: '李四', checkInTime: '2024-12-01 09:00', checkOutTime: '2024-12-01 18:00' },
-      { id: 3, name: '王五', checkInTime: '2024-12-02 08:30', checkOutTime: '2024-12-02 17:30' },
-      { id: 4, name: '赵六', checkInTime: '2024-12-02 09:00', checkOutTime: '2024-12-02 18:00' },],
+    punchRecords: [],
+    formatPunchRecords:[],
     active: 1,
     sortedDates: [], // 存储排序后的日期
     recordsByDate: {}, // 按日期分类的记录
     isPanelOpen: {}, // 控制日期面板展开/折叠
     isPanelVisible: false, // 控制弹出面板显示与否
   },
+  
 
   onLoad() {
     // 页面加载时调用一次更新日期函数
@@ -24,8 +23,9 @@ Page({
 
     // 加载打卡记录
     this.loadPunchRecords();
+    //console.log(this.punchRecords)
     // 分类
-    this.sortAndClassifyRecords();
+    //this.sortAndClassifyRecords();
   },
 
   onShow() {
@@ -117,8 +117,10 @@ Page({
       }))
       
       this.setData({ 
-        punchRecords: formattedRecords 
+        punchRecords:records,
+        formatPunchRecords: formattedRecords 
       })
+      //console.log(punchRecords);
 
     } catch (error) {
       console.error('获取打卡记录详细错误:', error) // 添加详细错误日志
@@ -164,24 +166,34 @@ Page({
     const recordsByDate = {};
     const sortedDates = [];
 
-    // 按照日期分类
+    // 按照日期分类并格式化日期
     this.data.punchRecords.forEach(record => {
-      const date = record.checkInTime.split(' ')[0]; // 获取日期部分
-      if (!recordsByDate[date]) {
-        recordsByDate[date] = [];
-        sortedDates.push(date); // 添加新的日期到日期列表
-      }
-      recordsByDate[date].push(record);
+        // 提取日期部分并格式化 (YYYY-MM-DD)
+        const dateObj = new Date(record.checkInTime);
+        const formattedDate = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
+
+        if (!recordsByDate[formattedDate]) {
+            recordsByDate[formattedDate] = [];
+            sortedDates.push(formattedDate); // 添加新的日期到日期列表
+        }
+
+        // 保存格式化数据
+        recordsByDate[formattedDate].push({
+            ...record,
+            checkInTime: record.checkInTime ? this.formatTime(record.checkInTime) : '-',
+            checkOutTime: record.checkOutTime ? this.formatTime(record.checkOutTime) : '-'
+        });
     });
 
     // 排序日期（从最新到最旧）
     sortedDates.sort((a, b) => new Date(b) - new Date(a));
 
     this.setData({
-      recordsByDate,
-      sortedDates,
+        recordsByDate,
+        sortedDates,
     });
-  },
+},
+
 
   // 切换日期面板的展开/折叠
   togglePanel: function (e) {
@@ -198,6 +210,7 @@ Page({
 
   // 打开记录面板
   openRecordPanel: function () {
+    this.sortAndClassifyRecords();
     this.setData({
       isPanelVisible: true,
     });

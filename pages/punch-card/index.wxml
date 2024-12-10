@@ -35,14 +35,15 @@
       <view class="header-cell">签到时间</view>
       <view class="header-cell">签退时间</view>
     </view>
-
-    <scroll-view scroll-y class="table-body" enhanced="true" show-scrollbar="false">
-      <block wx:for="{{punchRecords}}" wx:key="id">
+  
+    <scroll-view scroll-y class="table-body" enhanced="true">
+      <block wx:for="{{ formatPunchRecords}}" wx:key="id">
         <view class="table-row">
           <view class="cell name">{{item.name}}</view>
           <view class="cell {{item.checkInTime !== '-' ? 'checked' : ''}}">
             <text wx:if="{{item.checkInTime !== '-'}}">✓ </text>
             {{item.checkInTime}}
+
           </view>
           <view class="cell {{item.checkOutTime !== '-' ? 'checked' : ''}}">
             <text wx:if="{{item.checkOutTime !== '-'}}">✓ </text>
@@ -51,7 +52,7 @@
         </view>
       </block>
     </scroll-view>
-  </view>
+  </view>  
   <!-- 导航栏 -->
   <van-tabbar active="{{ active }}" bind:change="onChange" active-color="#07c160">
     <van-tabbar-item>
@@ -81,8 +82,6 @@
           <block wx:for="{{sortedDates}}" wx:key="index">
             <view class="date-item" bindtap="togglePanel" data-date="{{item}}">
               <text class="date-text">{{item}}</text>
-              <image class="arrow"
-                src="{{isPanelOpen[item] ? '/assets/icons/up-arrow.png' : '/assets/icons/down-arrow.png'}}" />
             </view>
 
             <!-- 折叠面板 -->
