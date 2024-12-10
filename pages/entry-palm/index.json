@@ -1,3 +1,6 @@
 {
-    "navigationBarTitleText": "掌纹录入"
+    "navigationBarTitleText": "掌纹录入",
+    "usingComponents": {
+        "van-divider": "@vant/weapp/divider/index"
+    }
 }

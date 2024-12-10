@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  height: 40vh;
   background-color: #f6f7fb;
   padding: 20rpx 30rpx 30rpx;
 }
@@ -36,6 +36,9 @@
 }
 
 .punch-btn {
+  display: flex;
+  align-items: center;  
+  justify-content: center;
   width: 85%;
   height: 120rpx;
   border-radius: 20rpx;
@@ -46,18 +49,27 @@
   box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
 }
 
-.btn-content {
-  height: 100%;
+.check-in .btn-content {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  flex-direction: row;
+}
+
+.check-out .btn-content {
+  display: flex;
+  align-items: center;
+  flex-direction: row-reverse; 
 }
 
 .btn-icon {
-  width: 64rpx;
-  height: 64rpx;
-  margin-bottom: 16rpx;
+  width: 70rpx;
+  height: 70rpx;
+  margin: 0 16rpx;
+}
+
+.btn-content text {
+  font-size: 40rpx;
+  color: #ffffff;
 }
 
 .check-in {
@@ -68,21 +80,19 @@
   background: linear-gradient(135deg, #FF9800, #F57C00);
 }
 
-.punch-btn text {
-  color: white;
-  font-size: 32rpx;
-  font-weight: 500;
-}
-
 /* 记录卡片样式 */
 .records-card {
+  width: 90%;
+  margin-left: 1%;
   background: white;
   border-radius: 24rpx;
+  border: 2px solid #f6f7fb;  
   padding: 30rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.1);
   margin-top: 10rpx;
   position: relative;
 }
+
 
 .card-header {
   margin-bottom: 20rpx;
@@ -187,8 +197,138 @@
   font-size: 28rpx;
 }
 
-/* 按钮点击效果 */
 .punch-btn:active {
   transform: scale(0.98);
   opacity: 0.9;
+}
+
+.card-header {
+  display: flex;
+  align-items: center; 
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.gif-icon {
+  width: 80px; 
+  height: 80px; 
+  margin-left: 10px; 
+}
+
+.tabbar-item-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+}
+
+.tabbar-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px; 
+}
+
+.history-container {
+  padding: 20rpx;
+}
+
+.open-btn {
+  width: 80rpx; /* 按钮宽度 */
+  height: 80rpx; /* 按钮高度 */
+  border-radius: 50%; /* 圆形 */
+  background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4rpx 10rpx rgba(0, 0, 0, 0.2); /* 添加阴影 */
+  overflow: hidden; /* 确保内容不会超出圆形 */
+}
+
+.button-text {
+  position: absolute; /* 绝对定位在父容器内 */
+  top: 50%; /* 距顶部50% */
+  left: 50%; /* 距左边50% */
+  transform: translate(-50%, -50%); /* 平移至完全居中 */
+  font-size: 24rpx; /* 字体大小 */
+  color: white; /* 字体颜色 */
+  font-weight: bold; /* 加粗字体 */
+  text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.3); /* 添加文字阴影 */
+  pointer-events: none; /* 防止文字阻挡点击 */
+}
+
+.icon {
+  width: 100%; /* 图标宽度 */
+  height: 100%; /* 图标高度 */
+  object-fit: cover; /* 保持比例填充 */
+}
+
+.popup-panel {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.panel-content {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  width: 80%;
+  height: 80%;
+  overflow-y: auto;
+}
+
+.date-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.date-text {
+  font-weight: bold;
+}
+
+.arrow {
+  width: 20rpx;
+  height: 20rpx;
+}
+
+.record-list {
+  margin-top: 10rpx;
+  padding-left: 20rpx;
+}
+
+.record-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.close-btn {
+  padding: 20rpx;
+  background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);
+  color: white;
+  border: none;
+  border-radius: 10rpx;
+  font-size: 32rpx;
+  margin-top: 20rpx;
 }

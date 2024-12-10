@@ -11,49 +11,59 @@
   .content {
     margin-bottom: 20px;
   }
-  
   .palm-scan-area {
     position: relative;
     width: 100%;
     height: 300px;
     margin-bottom: 20px;
     overflow: hidden;
+    border-radius: 20px;
   }
   
   .camera {
     width: 100%;
     height: 100%;
+    border-radius: 20px;
   }
   
   .scan-box {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);  /* 确保居中 */
     width: 100%;
     height: 100%;
-    pointer-events: none;
+    border-radius: 20px;
+    border: 2px solid #fff;
   }
   
   .palm-outline {
-    position: absolute;
-    width: 80%;
-    height: auto;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 保持图片的原始宽高比，不变形 */
   }
   
   .scan-line {
     position: absolute;
-    width: 80%;
-    height: 2px;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    background: green;
-    animation: scan 2s linear infinite;
+    width: 100%;
+    height: 4px; /* 扫描线高度 */
+    background-color: rgba(255, 255, 255, 0.6);
+    top: 0; /* 初始位置 */
+    animation: scanning 2s linear infinite; /* 扫描线动画 */
   }
+  
+  @keyframes scanning {
+    0% {
+      top: 0;
+    }
+    50% {
+      top: 90%; /* 扫描线向下移动 */
+    }
+    100% {
+      top: 0;
+    }
+  }
+  
   
   .progress-container {
     margin: 20px 0;
@@ -61,5 +71,17 @@
   
   .actions button {
     margin: 10px 5px;
+  }
+
+  .tabbar-item-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+  }
+  
+  .tabbar-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px; 
   }
   

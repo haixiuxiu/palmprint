@@ -42,13 +42,13 @@
     <button 
       class="scan-btn {{isScanning ? 'scanning' : ''}}" 
       bindtap="handleScanButton">
-      {{capturedImage ? '重新扫描' : (isScanning ? '停止扫描' : '开始扫描')}}
+      {{capturedImage ? '重新拍摄' : (isScanning ? '正在拍摄' : '开始拍摄')}}
     </button>
     <button 
       class="match-btn" 
       bindtap="matchPalm" 
       disabled="{{!capturedImage}}">
-      开始匹配
+      进行匹配
     </button>
   </view>
 
@@ -73,4 +73,21 @@
   <view class="footer-tips">
     <text class="footer-text">请将手掌放在取景框内，保持手掌完整显示</text>
   </view>
+  <!-- 导航栏 -->
+  <van-tabbar active="{{ active }}" bind:change="onChange" active-color="#07c160">
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 0 ? '/assets/icons/input_pick.png' : '/assets/icons/input.png'}}" />
+        <text class="{{active === 0 ? 'active-text' : 'inactive-text'}}">录入</text>
+      </view>
+    </van-tabbar-item>
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 1 ? '/assets/icons/clockin_pick.png' : '/assets/icons/clockin.png'}}" />
+        <text class="{{active === 1 ? 'active-text' : 'inactive-text'}}">签到</text>
+      </view>
+    </van-tabbar-item>
+  </van-tabbar>
 </view>

@@ -1,19 +1,14 @@
 <!--index.wxml-->
 <scroll-view class="scrollarea" scroll-y type="list">
   <view class="button-container">
-    <view bindtap="goPalmScan" class="gif-button-container">
-      <image src="/assets/dynamic/recognize.gif" class="gif-animation"></image>
-      <text class="button-text">掌纹识别</text>
-    </view>
     <view bindtap="goPalmEntry" class="gif-button-container">
       <image src="/assets/dynamic/scan.gif" class="gif-animation"></image>
       <text class="button-text">掌纹录入</text>
     </view>
-    <view bindtap="goPalmEntry" class="gif-button-container">
-      <image src="/assets/dynamic/clockin.gif" class="gif-animation"></image>
-      <text class="button-text">签到</text>
+    <view bindtap="goPunchCard" class="gif-button-container">
+      <image src="/assets/dynamic/recognize.gif" class="gif-animation"></image>
+      <text class="button-text">课堂签到</text>
     </view>
-
   </view>
 
 </scroll-view>

@@ -1,4 +1,7 @@
 {
     "navigationBarTitleText": "掌纹打卡",
-    "usingComponents": {}
+    "usingComponents": {
+        "van-row": "@vant/weapp/row/index",
+        "van-col": "@vant/weapp/col/index"
+    }
 }

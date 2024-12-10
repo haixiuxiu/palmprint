@@ -49,7 +49,7 @@ Page({
   // 添加跳转方法
   goPalmScan() {
     console.log('点击掌纹扫描按钮') // 添加日志便于调试
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/palm-scan/index',
       success: function() {
         console.log('跳转成功')
@@ -62,7 +62,7 @@ Page({
   // 添加跳转方法
   goPalmEntry() {
     console.log('点击掌纹录入按钮') // 添加日志便于调试
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/entry-palm/index',
       success: function() {
         console.log('跳转成功')
@@ -74,7 +74,7 @@ Page({
   },
   goPunchCard() {
     console.log('点击掌纹打卡按钮')
-    wx.navigateTo({
+    wx.redirectTo({
       url: '/pages/punch-card/index',
       success: function() {
         console.log('跳转成功')

@@ -10,49 +10,97 @@
     <button class="punch-btn check-in" bindtap="goToPalmMatch" data-type="in">
       <view class="btn-content">
         <image class="btn-icon" src="/assets/icons/check-in.png" />
-        <text>签到打卡</text>
+        <text>签到</text>
       </view>
     </button>
     <button class="punch-btn check-out" bindtap="goToPalmMatch" data-type="out">
       <view class="btn-content">
         <image class="btn-icon" src="/assets/icons/check-out.png" />
-        <text>签退打卡</text>
+        <text>签退</text>
       </view>
     </button>
   </view>
+</view>
 
-  <!-- 打卡记录区域 -->
-  <view class="records-card">
-    <view class="card-header">
-      <text class="card-title">打卡记录</text>
+<!-- 打卡记录区域 -->
+<view class="records-card">
+  <view class="card-header">
+    <text class="card-title">课堂打卡记录</text>
+    <image class="gif-icon" src="/assets/dynamic/presentation.gif" />
+  </view>
+
+  <view class="table">
+    <view class="table-header">
+      <view class="header-cell name">姓名</view>
+      <view class="header-cell">签到时间</view>
+      <view class="header-cell">签退时间</view>
     </view>
-    
-    <view class="table">
-      <view class="table-header">
-        <view class="header-cell name">姓名</view>
-        <view class="header-cell">签到时间</view>
-        <view class="header-cell">签退时间</view>
-      </view>
-      
-      <scroll-view 
-        scroll-y 
-        class="table-body"
-        enhanced="true"
-        show-scrollbar="false">
-        <block wx:for="{{punchRecords}}" wx:key="id">
-          <view class="table-row">
-            <view class="cell name">{{item.name}}</view>
-            <view class="cell {{item.checkInTime !== '-' ? 'checked' : ''}}">
-              <text wx:if="{{item.checkInTime !== '-'}}">✓ </text>
-              {{item.checkInTime}}
-            </view>
-            <view class="cell {{item.checkOutTime !== '-' ? 'checked' : ''}}">
-              <text wx:if="{{item.checkOutTime !== '-'}}">✓ </text>
-              {{item.checkOutTime}}
-            </view>
+
+    <scroll-view scroll-y class="table-body" enhanced="true" show-scrollbar="false">
+      <block wx:for="{{punchRecords}}" wx:key="id">
+        <view class="table-row">
+          <view class="cell name">{{item.name}}</view>
+          <view class="cell {{item.checkInTime !== '-' ? 'checked' : ''}}">
+            <text wx:if="{{item.checkInTime !== '-'}}">✓ </text>
+            {{item.checkInTime}}
           </view>
-        </block>
-      </scroll-view>
+          <view class="cell {{item.checkOutTime !== '-' ? 'checked' : ''}}">
+            <text wx:if="{{item.checkOutTime !== '-'}}">✓ </text>
+            {{item.checkOutTime}}
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+  </view>
+  <!-- 导航栏 -->
+  <van-tabbar active="{{ active }}" bind:change="onChange" active-color="#07c160">
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 0 ? '/assets/icons/input_pick.png' : '/assets/icons/input.png'}}" />
+        <text class="{{active === 0 ? 'active-text' : 'inactive-text'}}">录入</text>
+      </view>
+    </van-tabbar-item>
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 1 ? '/assets/icons/clockin_pick.png' : '/assets/icons/clockin.png'}}" />
+        <text class="{{active === 1 ? 'active-text' : 'inactive-text'}}">签到</text>
+      </view>
+    </van-tabbar-item>
+  </van-tabbar>
+  <view class="history-container">
+    <view bindtap="openRecordPanel" class="open-btn">
+      <image src="/assets/icons/study-of-the-past.png" class="icon"></image>
+    </view>    
+
+    <!-- 弹出面板 -->
+    <view wx:if="{{isPanelVisible}}" class="popup-panel">
+      <view class="panel-content">
+        <view class="date-list">
+          <block wx:for="{{sortedDates}}" wx:key="index">
+            <view class="date-item" bindtap="togglePanel" data-date="{{item}}">
+              <text class="date-text">{{item}}</text>
+              <image class="arrow"
+                src="{{isPanelOpen[item] ? '/assets/icons/up-arrow.png' : '/assets/icons/down-arrow.png'}}" />
+            </view>
+
+            <!-- 折叠面板 -->
+            <view wx:if="{{isPanelOpen[item]}}">
+              <view class="record-list">
+                <block wx:for="{{recordsByDate[item]}}" wx:key="id">
+                  <view class="record-item">
+                    <text>{{item.name}}</text>
+                    <text>{{item.checkInTime}}</text>
+                    <text>{{item.checkOutTime}}</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+          </block>
+        </view>
+        <button bindtap="closePanel" class="close-btn">关闭</button>
+      </view>
     </view>
   </view>
 </view>

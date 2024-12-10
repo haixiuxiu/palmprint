@@ -5,7 +5,6 @@
     padding: 20px;
   }
   
-  /* 提示区域样式 */
 .tip-area {
   width: 100%;
   padding: 20rpx;
@@ -39,10 +38,15 @@
     font-weight: bold;
     color: #333;
   }
-  
+
   .form {
-    width: 100%;
-    max-width: 400px;
+    width: 90%; /* 设置表单宽度 */
+    padding: 20px;
+    margin-top: 20%;
+    background-color: white; /* 表单背景色 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 添加阴影 */
+    border-radius: 8px; /* 圆角 */
+    box-sizing: border-box; /* 包括内边距在内计算宽度 */
   }
   
   .form-item {
@@ -57,7 +61,7 @@
   }
   
   input {
-    width: 100%;
+    width: 90%;
     padding: 10px;
     font-size: 16px;
     border: 1px solid #ddd;
@@ -94,8 +98,8 @@
   .start-btn {
     width: 100%;
     padding: 15px;
-    background-color: #007aff;
-    color: #fff;
+    background: linear-gradient(to top, #209cff 0%, #68e0cf 100%);
+    color: black;
     font-size: 18px;
     text-align: center;
     border: none;
@@ -106,17 +110,15 @@
     padding-bottom: 100px;
   }
 
-/* tabbar-item-container 用于垂直排列图标和文字 */
 .tabbar-item-container {
   display: flex;
-  flex-direction: column;  /* 设置垂直排列 */
-  align-items: center;     /* 水平居中对齐 */
+  flex-direction: column; 
+  align-items: center;    
 }
 
-/* 设置图标的大小 */
 .tabbar-icon {
   width: 24px;
   height: 24px;
-  margin-bottom: 4px;  /* 图标和文字之间的间距 */
+  margin-bottom: 4px; 
 }
 

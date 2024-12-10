@@ -41,8 +41,21 @@ Page({
   },
   // 监听 Tabbar 的切换
   onChange(event) {
+    console.log(event.detail); // 打印选中的索引
     this.setData({
-      active: event.detail
+      active: event.detail // 更新 active 值，控制 tabbar 的选中状态
     });
-  },
+  
+    // 定义页面路径
+    const tabPaths = [
+      '/pages/entry-palm/index',   // 首页
+      '/pages/punch-card/index'    // 我的
+    ];
+  
+    // 跳转到对应的页面
+    wx.redirectTo({
+      url: tabPaths[event.detail], // 跳转到对应的页面
+    });
+  }
+  
 });

@@ -12,7 +12,8 @@ Page({
     cameraContext: null,
     mode: '',
     punchType: '',
-    capturedImage: ''
+    capturedImage: '',
+    active:1
   },
 
   onLoad(options) {
@@ -112,33 +113,58 @@ Page({
     wx.showLoading({ title: '匹配中...' });
 
     try {
-      // 转换图片为 base64
       const fs = wx.getFileSystemManager();
       const base64 = fs.readFileSync(this.data.capturedImage, 'base64');
       
-      // 调用后端验证接口
-      const validateRes = await wx.request({
-        url: 'http://47.100.103.52:5000/api/validatePalm',
-        method: 'POST',
-        data: {
-          image: base64,
-          method: 1
-        }
+      const validateRes = await new Promise((resolve, reject) => {
+        wx.request({
+          url: 'https://palmvault.asia/api/validatePalm',
+          method: 'POST',
+          data: {
+            image: base64,
+            method: 1
+          },
+          success: resolve,  // 添加 success 回调
+          fail: reject      // 添加 fail 回调
+        });
       });
 
-      if (validateRes.data.code === 200) {
-        // 如果是打卡模式，调用打卡接口
-        if (this.data.mode === 'punch') {
-          await this.handleMatchSuccess(validateRes.data.data);
+      if (validateRes && validateRes.data) {
+        const message = validateRes.data.message;
+        if (message === '匹配成功') {
+          // 先显示匹配成功的消息
+          await new Promise(resolve => {
+            wx.showToast({
+              title: `${validateRes.data.data.name} 掌纹匹配成功`,
+              duration: 3000,
+              icon: 'success',
+              complete: resolve
+            });
+          });
+          
+          // 等待 toast 显示完成
+          await new Promise(resolve => setTimeout(resolve, 3000));
+
+          // 然后继续处理后续逻辑
+          if (this.data.mode === 'punch') {
+            wx.showLoading({
+              title: '正在签到'
+            });
+            await this.handleMatchSuccess(validateRes.data.data);
+          }
         } else {
-          // 普通匹配模式的处理
-          wx.showToast({
-            title: '匹配成功',
-            icon: 'success'
+          await new Promise(resolve => {
+            wx.showModal({
+              title: '匹配失败',
+              content: '数据库中未找到匹配的掌纹',
+              showCancel: false,
+              confirmText: '确定',
+              complete: resolve
+            });
           });
         }
       } else {
-        throw new Error(validateRes.data?.message || '匹配失败');
+        throw new Error('无效的响应');
       }
 
     } catch (error) {
@@ -168,40 +194,59 @@ Page({
     }
   },
 
-  async handleMatchSuccess(result) {
-    if (this.data.mode === 'punch') {
-      try {
-        const res = await wx.request({
-          url: 'http://47.100.103.52:5000/api/doPunchCard',
+  async handleMatchSuccess(matchData) {
+    try {
+      const punchRes = await new Promise((resolve, reject) => {
+        wx.request({
+          url: 'https://palmvault.asia/api/doPunchCard',
           method: 'POST',
           data: {
-            userId: result.userId,
+            name: matchData.name,
             type: this.data.punchType,
             time: new Date().toISOString()
-          }
-        })
+          },
+          success: resolve,  // 添加 success 回调
+          fail: reject       // 添加 fail 回调
+        });
+      });
 
-        if (res.data.code === 200) {
-          wx.showToast({
-            title: this.data.punchType === 'in' ? '签到成功' : '签退成功',
-            icon: 'success'
-          })
-          
-          // 返回打卡页面
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 1500)
-        }
-      } catch (error) {
-        console.error('打卡失败:', error)
+      if (punchRes.data.code === 200) {
         wx.showToast({
-          title: '打卡失败',
-          icon: 'error'
-        })
+          title: this.data.punchType === 'in' ? '签到成功' : '签退成功',
+          icon: 'success'
+        });
+        
+        // 延迟返回上一页
+        setTimeout(() => {
+          wx.navigateBack();
+        }, 1500);
+      } else {
+        throw new Error(punchRes.data.message || '打卡失败');
       }
-    } else {
-      // 原有的匹���成功逻辑
-      // ...
+    } catch (error) {
+      console.error('打卡失败:', error);
+      wx.showToast({
+        title: error.message || '打卡失败',
+        icon: 'none'
+      });
     }
+  },
+      // 监听 Tabbar 的切换
+  onChange(event) {
+    console.log(event.detail); // 打印选中的索引
+    this.setData({
+      active: event.detail // 更新 active 值，控制 tabbar 的选中状态
+    });
+  
+    // 定义页面路径
+    const tabPaths = [
+      '/pages/entry-palm/index',   // 首页
+      '/pages/punch-card/index'    // 我的
+    ];
+  
+    // 跳转到对应的页面
+    wx.redirectTo({
+      url: tabPaths[event.detail], // 跳转到对应的页面
+    });
   }
 })

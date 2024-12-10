@@ -74,8 +74,8 @@ page {
   border-radius: 10%; /* 将容器设置为圆形 */
   display: inline-block;
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 60vw;
+  height: 60vw;
   cursor: pointer;
   overflow: hidden; /* 确保内容被圆形裁剪 */
 }
@@ -89,11 +89,23 @@ page {
 
 .button-text {
   position: absolute;
-  top: 50%;
+  bottom: 5%; 
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   font-size: 16px;
-  color: white; /* 根据背景调整文字颜色 */
+  color: black;
   font-weight: bold;
   text-align: center;
+}
+
+.tabbar-item-container {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;    
+}
+
+.tabbar-icon {
+  width: 24px;
+  height: 24px;
+  margin-bottom: 4px; 
 }

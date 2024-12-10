@@ -1,35 +1,50 @@
 <view class="container">
+    <van-notify id="van-notify" />
     <!-- 显示信息 -->
     <view class="content">
-        <text>姓名: {{name}}</text>
-        <text>录入手掌: {{hand === 'left' ? '左手' : '右手'}}</text>
+        <text>{{name}}  </text>
+        <text>录入{{hand === 'left' ? '左手' : '右手'}}</text>
     </view>
 
     <!-- 扫描区域 -->
     <view class="palm-scan-area">
         <!-- 嵌入摄像头 -->
-        <camera device-position="back" flash="auto" binderror="onCameraError" class="camera">
-        </camera>
-
+        <camera device-position="back" flash="auto" binderror="onCameraError" class="camera"></camera>
+    
         <!-- 自定义取景框 -->
         <cover-view class="scan-box">
             <cover-image src="{{hand === 'left' ? '/assets/icons/left_scan.png' : '/assets/icons/right_scan.png'}}"
-                class="palm-outline">
-            </cover-image>
+                class="palm-outline"></cover-image>
         </cover-view>
-
+    
         <!-- 扫描线动画 -->
         <cover-view class="scan-line" wx:if="{{isScanning}}"></cover-view>
     </view>
     <!-- 进度条 -->
     <view class="progress-container">
-        <van-circle value="{{currentStep / totalSteps * 100}}" color="{{gradientColor}}" text="录入第{{currentStep}}张" />
+        <van-circle value="{{currentStep / totalSteps * 100}}" color="{{gradientColor}}" text="录入第{{currentStep}}/{{totalSteps}}张" />
     </view>
 
 
     <!-- 操作按钮 -->
     <view class="actions">
         <button bindtap="takePhoto" wx:if="{{currentStep < totalSteps}}">拍照</button>
-        <button wx:if="progress === 100" bindtap="complete">完成</button>
     </view>
+<!-- 导航栏 -->
+<van-tabbar active="{{ active }}" bind:change="onChange" active-color="#07c160">
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 0 ? '/assets/icons/input_pick.png' : '/assets/icons/input.png'}}" />
+        <text class="{{active === 0 ? 'active-text' : 'inactive-text'}}">录入</text>
+      </view>
+    </van-tabbar-item>
+    <van-tabbar-item>
+      <view class="tabbar-item-container">
+        <image class="tabbar-icon"
+          src="{{active === 1 ? '/assets/icons/clockin_pick.png' : '/assets/icons/clockin.png'}}" />
+        <text class="{{active === 1 ? 'active-text' : 'inactive-text'}}">签到</text>
+      </view>
+    </van-tabbar-item>
+  </van-tabbar>
 </view>
